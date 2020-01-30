@@ -5,17 +5,17 @@ def substr_in_str(str, substr):
 
     #список позиций вхождений подстроки
     nums = []
-    for i = 0 to len(str) - 1:
+    for i in range(0, len(str) - 1):
         #ищем вхождение первого символа подстроки
         if substr[0] == str[i]:
             #проходим по подстроке
             shift = 0 #сдвиг
-            for j = 1 to len(substr) - 1:
+            for j in range(1, len(substr) - 1):
                 #если следующий символ не совпадает - 
                 if substr[j] != str[i + j]:
                     #проверка - а встречается ли еще первый символ подстроки 
                     #в куске строки длиной подстроки
-                    for k = j to len(substr) - 1:
+                    for k in range(j, len(substr) - 1):
                         #если встречается - устанавливаем величину сдвига на этот символ
                         if substr[0] == str[i + k]:
                             shift = k
@@ -73,3 +73,44 @@ def knuth_morris_pratt (text, pattern):
     occurrences = tuple(nums)
 
     return occurrences
+
+
+#функция поиска на алгоритме Бойера-Мура
+
+def boyer_moore(source, template):
+    offset_table ={}
+    nums = []
+    source_len = len(source)
+    template_len = len(template)
+
+    if template_len > source_len:
+        return -1
+
+    for i in range(0, 256):
+        offset_table[chr(i)] = template_len
+
+    for i in range(0, template_len - 1):
+        offset_table[template[i]] = template_len - i - 1
+
+    i = template_len - 1
+    j =i
+    k = i
+
+    
+    while j >= 0 and i <= source_len - 1:
+        j = template_len - 1
+        k = i
+        while j >= 0 and source[k] == template[j]:
+            k = k - 1
+            j = j - 1
+        i = i + offset_table(source[i])
+        nums.append(k+1)
+       
+    occurrences = tuple(nums)
+
+    return occurrences
+
+    #функция двоичного поиска
+
+
+    #функция поиска по хэш-функции
